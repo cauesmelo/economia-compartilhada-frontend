@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter, RouteComponent } from "vue-router";
 
 import Home from "@/views/Home.vue"
 import Login from "@/views/Login.vue"
@@ -25,7 +25,7 @@ const routes = [
   },
   {
     path: "/login",
-    name: "Hogin",
+    name: "Login",
     component: Login
   },
   {
@@ -59,12 +59,12 @@ const routes = [
     component: ReadItems
   },
   {
-    path: "/alterar-item",
+    path: "/alterar-item/:id",
     name: "UpdateItem",
     component: UpdateItem
   },
   {
-    path: "/remover-item",
+    path: "/remover-item/:id",
     name: "DeleteItem",
     component: DeleteItem
   },
@@ -81,6 +81,11 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+router.beforeEach((to: any, from: any, next: any) => {
+  console.log(to.href);
+  next();
 });
 
 export default router;

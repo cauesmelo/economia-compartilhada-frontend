@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import "mosha-vue-toastify/dist/style.css";
+
 import router from './router';
 
 createApp(App)

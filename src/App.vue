@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import Navigation from '@/components/Menu.vue'
+import Navigation from '@/components/Navigation.vue'
+import Bottom from '@/components/Bottom.vue'
+import Login from '@/views/Login.vue'
+import { ref } from 'vue';
+
+const isAuthenticated = ref(false);
+
 </script>
 
 <template>
-  <Navigation />
-  <router-view />
+  <body v-if="isAuthenticated">
+    <Navigation />
+    <router-view />
+    <Bottom />
+  </body>
+
+  <body v-else>
+    <Login/>
+  </body>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

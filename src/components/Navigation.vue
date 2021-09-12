@@ -12,6 +12,8 @@
   </div>
 </template>
 
-<style scoped>
-
+<style lang="scss">
+  .nav {
+    border:1px solid red;
+  }
 </style>
