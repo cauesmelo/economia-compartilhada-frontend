@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <h1>About</h1>
+  <h1>Alterar item</h1>
 </template>
 
 <style scoped>
