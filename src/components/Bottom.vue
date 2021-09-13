@@ -9,6 +9,7 @@ By Unirio
 
 <style lang="scss">
 footer {
+  bottom: 0;
   height: 3rem;
 }
 </style>

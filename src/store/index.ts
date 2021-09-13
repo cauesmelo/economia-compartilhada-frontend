@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 const state = {
   name: '',
@@ -26,9 +27,10 @@ export default createStore({
       state.name = user.nome;
       state.admin = user.administrador;
       state.token = user.token;
-    }
+    },
   },
   getters: {
-    isAuthenticated: (state) => state.token !== ''
-  }
+    isAuthenticated: (state) => state.token !== '',
+  },
+  plugins: [createPersistedState()],
 });
