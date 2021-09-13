@@ -36,6 +36,7 @@
     display: flex;
     align-items: center;
     height: 4rem;
+
     > div {
       display: flex;
       width: 50%;
@@ -76,5 +77,9 @@
         justify-content: right;
       }
     }
+  }
+
+  .selected {
+    font-weight: 600;
   }
 </style>
