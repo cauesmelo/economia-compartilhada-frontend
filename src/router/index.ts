@@ -1,4 +1,5 @@
-import { createWebHistory, createRouter, RouteComponent } from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
+import { createToast } from "mosha-vue-toastify";
 
 import Home from "@/views/Home.vue"
 import Login from "@/views/Login.vue"
@@ -15,7 +16,8 @@ import DeleteItem from '@/views/DeleteItem.vue'
 
 import Unauthorized from '@/views/Unauthorized.vue'
 import NotFound from "@/views/NotFound.vue"
-
+import store from "../store";
+import { computed } from "vue";
 
 const routes = [
   {
@@ -83,9 +85,14 @@ const router = createRouter({
   routes
 });
 
-router.beforeEach((to: any, from: any, next: any) => {
-  console.log(to.href);
-  next();
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = computed(() => store.getters['isAuthenticated']).value;
+  if (!isAuthenticated && to.path !== '/login') {
+    createToast('Acesso negado. Necessário login.', { type: 'danger' });
+    router.push('/login');
+  } else {
+    next();
+  }
 });
 
 export default router;

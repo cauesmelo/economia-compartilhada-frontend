@@ -1,24 +1,18 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:8080'
+const URL = 'http://localhost:8080';
 
-interface User {
-  name: string;
-  admin: boolean;
+interface ILoginResponse {
+  administrador: boolean;
+  nome: string;
   token: string;
 }
 
-export async function login(username: string, password: string): Promise<void> {
-  try {
-    const data = axios.post(URL + "/auth", {
-      email: username,
-      senha: password,
-    });
+export const login = async (username: string, password: string): Promise<ILoginResponse> => {
+  const { data } = await axios.post(URL + "/auth", {
+    email: username,
+    senha: password,
+  });
 
-    console.log(data);
-
-
-  } catch (err) {
-    console.log('Erro');
-  }
+  return data.data;
 }
