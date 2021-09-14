@@ -6,6 +6,7 @@
   import { getItems, IItem } from '../services/api';
   import ButtonComponent from '@/components/ButtonComponent.vue';
   import Pagination from '@/components/Pagination.vue';
+  import router from '../router';
 
   let items = ref([] as IItem[]);
   let totalItems = ref(0);
@@ -17,6 +18,10 @@
     totalItems.value = total;
     currentPage.value = current_page;
   })();
+
+  const handleNew = () => {
+    router.push('/criar-item');
+  };
 </script>
 
 <template>
@@ -29,7 +34,11 @@
             <h2>Itens compartilhados</h2>
           </div>
           <div class="headerContainerButton">
-            <ButtonComponent text="Novo item" icon="white-Plus" />
+            <ButtonComponent
+              text="Novo item"
+              icon="white-Plus"
+              @click="handleNew"
+            />
           </div>
         </div>
         <table>

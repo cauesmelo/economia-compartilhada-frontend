@@ -1,5 +1,5 @@
 <script setup="props" lang="ts">
-  import { defineProps, ref } from 'vue';
+  import { defineProps } from 'vue';
 
   const ITEMS_PER_PAGE = 10;
 
@@ -27,13 +27,13 @@
     </div>
     <div>{{ current }}</div>
     <div v-show="calcPages(total) > current">
-      {{ current - 3 }}
+      {{ current + 1 }}
     </div>
     <div v-show="calcPages(total) > current + 1">
-      {{ current - 2 }}
+      {{ current + 2 }}
     </div>
     <div v-show="calcPages(total) > current + 2">
-      {{ current - 1 }}
+      {{ current + 3 }}
     </div>
     <div :class="{ disable: current === calcPages(total) }">&gt;&gt;</div>
   </div>

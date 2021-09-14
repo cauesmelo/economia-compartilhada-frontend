@@ -15,6 +15,8 @@ export interface IItem {
   tipo: 'MULTIPLO' | 'UNICO';
 }
 
+export type IItemInsert = Omit<IItem, 'id'>;
+
 interface IGetItemsResponse {
   data: IItem[];
   total: number;
@@ -47,4 +49,21 @@ export const getItems = async (
     }
   );
   return data.data;
+};
+
+export const postItem = async (
+  item: IItemInsert,
+  token: string
+): Promise<void> => {
+  await axios.put(
+    URL + `/api/item/novo`,
+    { ...item },
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };

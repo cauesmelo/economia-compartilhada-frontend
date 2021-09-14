@@ -17,7 +17,7 @@
   <nav>
     <div>
       <div class="logo"></div>
-      <router-link to="/listar-items" class="clickable"> Itens</router-link>
+      <router-link to="/listar-itens" class="clickable"> Itens</router-link>
     </div>
     <div>
       <div>Olá, {{ state.name }}</div>

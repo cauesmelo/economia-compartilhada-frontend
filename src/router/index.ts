@@ -56,7 +56,7 @@ const routes = [
     component: CreateItem,
   },
   {
-    path: '/listar-items',
+    path: '/listar-itens',
     name: 'ReadItems',
     component: ReadItems,
   },

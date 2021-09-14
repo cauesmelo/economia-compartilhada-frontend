@@ -15,7 +15,7 @@
     try {
       const user = await login(email.value, password.value);
       store.commit('login', user);
-      router.push('/listar-items');
+      router.push('/listar-itens');
     } catch (err) {
       console.log(err);
       createToast(
