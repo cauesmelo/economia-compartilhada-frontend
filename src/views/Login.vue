@@ -18,7 +18,10 @@
       router.push('/listar-items');
     } catch (err) {
       console.log(err);
-      createToast('Não foi possível realizar login.', { type: 'danger' });
+      createToast(
+        'Não foi possível realizar login. Verifique suas credenciais.',
+        { type: 'danger' }
+      );
     } finally {
       isLoading.value = false;
     }

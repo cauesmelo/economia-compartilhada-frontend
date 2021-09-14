@@ -1,19 +1,16 @@
 <script setup="props" lang="ts">
-  import { defineProps, withDefaults } from 'vue';
+  import { defineProps } from 'vue';
 
   interface Props {
     text: string;
     icon?: string;
   }
 
-  withDefaults(defineProps<Props>(), {
-    text: '',
-    icon: '',
-  });
+  defineProps<Props>();
 </script>
 
 <template>
-  <div class="container">
+  <div class="buttonComponentContainer">
     <div class="icon"></div>
     <button class="button-9" role="button">
       <img :src="'./src/assets/icons/' + icon + '.svg'" />
@@ -23,7 +20,7 @@
 </template>
 
 <style lang="scss" scoped>
-  .container {
+  .buttonComponentContainer {
     display: flex;
     justify-content: center;
   }
@@ -42,7 +39,6 @@
     font-size: 100%;
     height: 44px;
     line-height: 1.15;
-    margin: 12px 0 0;
     outline: none;
     overflow: hidden;
     padding: 0 25px;
