@@ -12,15 +12,22 @@
   const token = computed(() => store.state.token).value;
   const items = reactive([] as IItem[]);
   const totalItems = ref(0);
-  const currentPage = ref(0);
+  const currentPage = ref(1);
   const itemToDelete = ref(0);
 
-  (async () => {
-    const { data, total, current_page } = await getItems(1, token);
+  const loadItems = async () => {
+    while (items.length > 0) items.pop();
+    const { data, total, current_page } = await getItems(
+      currentPage.value,
+      token
+    );
     items.push(...data);
     totalItems.value = total;
     currentPage.value = current_page;
-  })();
+    console.log(items);
+  };
+
+  loadItems();
 
   const handleNew = () => {
     router.push('/criar-item');
@@ -66,7 +73,13 @@
     console.log('open', id);
   };
 
+  const handleChangePage = (pageNumber: number) => {
+    currentPage.value = pageNumber;
+    loadItems();
+  };
+
   const showModal = ref(false);
+  // async () => await loadItems();
 </script>
 
 <template>
@@ -116,7 +129,11 @@
           </tr>
         </table>
 
-        <Pagination :current="currentPage" :total="totalItems" />
+        <Pagination
+          :current="currentPage"
+          :total="totalItems"
+          @changePage="handleChangePage"
+        />
       </div>
     </div>
   </Suspense>
