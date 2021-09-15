@@ -1,20 +1,23 @@
 <script setup lang="ts">
   import Navigation from '@/components/Navigation.vue';
-  import { computed, ref } from 'vue';
+  import { computed, ref, reactive } from 'vue';
   import store from '../store';
-  const token = computed(() => store.state.token).value;
-  import { getItems, IItem } from '../services/api';
+  import { getItems, IItem, deleteItem } from '../services/api';
   import ButtonComponent from '@/components/ButtonComponent.vue';
   import Pagination from '@/components/Pagination.vue';
+  import Modal from '@/components/Modal.vue';
   import router from '../router';
+  import { createToast } from 'mosha-vue-toastify';
 
-  let items = ref([] as IItem[]);
-  let totalItems = ref(0);
-  let currentPage = ref(0);
+  const token = computed(() => store.state.token).value;
+  const items = reactive([] as IItem[]);
+  const totalItems = ref(0);
+  const currentPage = ref(0);
+  const itemToDelete = ref(0);
 
   (async () => {
     const { data, total, current_page } = await getItems(1, token);
-    items.value = data;
+    items.push(...data);
     totalItems.value = total;
     currentPage.value = current_page;
   })();
@@ -22,10 +25,54 @@
   const handleNew = () => {
     router.push('/criar-item');
   };
+
+  const handleDelete = (id: number) => {
+    itemToDelete.value = id;
+    showModal.value = true;
+  };
+
+  const handleCloseModal = () => {
+    showModal.value = false;
+    itemToDelete.value = 0;
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteItem(itemToDelete.value, token);
+      createToast('Item removido.', { type: 'success' });
+      Object.assign(
+        items,
+        items.filter((i) => i.id !== itemToDelete.value)
+      );
+      itemToDelete.value = 0;
+    } catch (err) {
+      createToast('Não foi possível remover item.', { type: 'danger' });
+    } finally {
+      showModal.value = false;
+    }
+  };
+
+  const handleEdit = (id: number) => {
+    console.log('edit', id);
+  };
+
+  const handleOpen = (id: number) => {
+    console.log('open', id);
+  };
+
+  const showModal = ref(false);
 </script>
 
 <template>
   <Navigation />
+  <Modal
+    title="Atenção"
+    text="Deseja remover permanentemente o item?"
+    type="DANGER"
+    :show="showModal"
+    @closeModal="handleCloseModal"
+    @confirm="handleConfirmDelete"
+  />
   <Suspense>
     <div class="center">
       <div class="container">
@@ -56,9 +103,9 @@
             <td>{{ item.descricao }}</td>
             <td>{{ item.tipo }}</td>
             <td class="buttonsContainer">
-              <div class="openBtn"></div>
-              <div class="editBtn"></div>
-              <div class="deleteBtn"></div>
+              <div class="openBtn" @click="handleOpen(item.id)"></div>
+              <div class="editBtn" @click="handleEdit(item.id)"></div>
+              <div class="deleteBtn" @click="handleDelete(item.id)"></div>
             </td>
           </tr>
         </table>

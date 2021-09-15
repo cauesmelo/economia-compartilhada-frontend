@@ -67,3 +67,13 @@ export const postItem = async (
     }
   );
 };
+
+export const deleteItem = async (id: number, token: string): Promise<void> => {
+  await axios.delete(URL + `/api/item/${id}`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

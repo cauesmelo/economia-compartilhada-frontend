@@ -25,7 +25,7 @@
     <div v-show="current > 1">
       {{ current - 1 }}
     </div>
-    <div>{{ current }}</div>
+    <div class="currentPage">{{ current }}</div>
     <div v-show="calcPages(total) > current">
       {{ current + 1 }}
     </div>
@@ -42,11 +42,18 @@
 <style lang="scss" scoped>
   .paginationComponentContainer {
     display: flex;
+    gap: 1rem;
 
     > div {
       cursor: pointer;
       text-align: center;
       min-width: 2rem;
+    }
+
+    .currentPage {
+      background-color: $accent-color;
+      color: $bg-color;
+      border-radius: 10%;
     }
   }
 </style>

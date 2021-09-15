@@ -4,16 +4,26 @@
   interface Props {
     text: string;
     icon?: string;
+    type?: 'DANGER' | 'SUCCESS';
   }
 
-  defineProps<Props>();
+  const props = defineProps<Props>();
+
+  // const isDanger = () => props.type === 'DANGER';
+
+  const isDanger = props.type === 'DANGER';
+  const isSuccess = props.type === 'SUCCESS';
 </script>
 
 <template>
   <div class="buttonComponentContainer">
     <div class="icon"></div>
-    <button class="button-9" role="button">
-      <img :src="'./src/assets/icons/' + icon + '.svg'" />
+    <button
+      class="button-9"
+      :class="{ danger: isDanger, success: isSuccess }"
+      role="button"
+    >
+      <img v-if="icon" :src="'./src/assets/icons/' + icon + '.svg'" />
       <p>{{ text }}</p>
     </button>
   </div>
@@ -23,6 +33,13 @@
   .buttonComponentContainer {
     display: flex;
     justify-content: center;
+    .danger {
+      background-color: #dc3545;
+    }
+
+    .success {
+      background-color: #28a745;
+    }
   }
 
   .button-9 {
