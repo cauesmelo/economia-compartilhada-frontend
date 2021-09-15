@@ -53,7 +53,13 @@
   };
 
   const handleEdit = (id: number) => {
-    console.log('edit', id);
+    const item = items.find((i) => i.id === id) || ({} as IItem);
+    router.push({
+      path: `/alterar-item/${id}`,
+      query: {
+        ...item,
+      },
+    });
   };
 
   const handleOpen = (id: number) => {

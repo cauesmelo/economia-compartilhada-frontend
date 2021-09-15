@@ -50,7 +50,7 @@
 
     .modalWrapper {
       background-color: white;
-      width: 50%;
+      width: 30%;
       padding: 2rem;
       min-width: 300px;
 
@@ -61,6 +61,7 @@
       .line {
         margin-top: 2rem;
         display: flex;
+        gap: 1rem;
         justify-content: space-around;
       }
     }

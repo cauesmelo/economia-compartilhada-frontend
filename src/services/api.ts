@@ -77,3 +77,17 @@ export const deleteItem = async (id: number, token: string): Promise<void> => {
     },
   });
 };
+
+export const updateItem = async (item: IItem, token: string): Promise<void> => {
+  await axios.post(
+    URL + `/api/item/atualiza/`,
+    { ...item },
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};

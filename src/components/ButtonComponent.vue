@@ -9,8 +9,6 @@
 
   const props = defineProps<Props>();
 
-  // const isDanger = () => props.type === 'DANGER';
-
   const isDanger = props.type === 'DANGER';
   const isSuccess = props.type === 'SUCCESS';
 </script>
