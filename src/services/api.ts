@@ -27,6 +27,17 @@ interface IGetItemsResponse {
   to: number;
 }
 
+interface IPasswordChange {
+  oldPassword: string;
+  newPassword: string;
+  repeatedNewPassword: string;
+}
+
+interface IPasswordChangeResponse {
+  message: string;
+  type: 'SUCCESS' | 'FAIL';
+}
+
 export const login = async (
   username: string,
   password: string
@@ -90,4 +101,37 @@ export const updateItem = async (item: IItem, token: string): Promise<void> => {
       },
     }
   );
+};
+
+export const updatePassword = async (
+  password: IPasswordChange,
+  token: string
+): Promise<IPasswordChangeResponse> => {
+  const response = {} as IPasswordChangeResponse;
+
+  try {
+    await axios.post(
+      URL + `/api/usuario/trocaSenha`,
+      {
+        senhaAntiga: password.oldPassword,
+        senhaNova: password.newPassword,
+        senhaNovaRepetida: password.repeatedNewPassword,
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    response.message = 'Senha alterada com sucesso';
+    response.type = 'SUCCESS';
+  } catch (err: any) {
+    response.message = Object.values(err.response.data.errors)[0] as string;
+    response.type = 'FAIL';
+  }
+
+  return response;
 };
