@@ -66,11 +66,6 @@ const routes = [
     component: UpdateItem,
   },
   {
-    path: '/remover-item/:id',
-    name: 'DeleteItem',
-    component: DeleteItem,
-  },
-  {
     path: '/401',
     component: Unauthorized,
   },
