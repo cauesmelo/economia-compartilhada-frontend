@@ -45,6 +45,20 @@ export interface IUserInsert {
   repeatedPassword: string;
 }
 
+export interface IItemComplete {
+  nome: string;
+  descricao: string;
+  tipo: 'UNICO' | 'MULTIPLO';
+  compartilhamentos: any;
+}
+
+export interface IShare {
+  itemId: number;
+  recipient: string;
+  startDate: string;
+  endDate: string;
+}
+
 export const login = async (
   username: string,
   password: string
@@ -186,4 +200,42 @@ export const createAccount = async (user: IUserInsert): Promise<Response> => {
   }
 
   return response;
+};
+
+export const getItem = async (
+  id: number,
+  token: string
+): Promise<IItemComplete> => {
+  const { data } = await axios.get(URL + `/api/item/listaunico?itemId=${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  console.log(data);
+  return data.data;
+};
+
+export const shareItem = async (
+  share: IShare,
+  token: string
+): Promise<void> => {
+  const response = await axios.put(
+    URL + `/api/compartilhamento/novo`,
+    {
+      item: {
+        id: share.itemId,
+      },
+      dataInicio: share.startDate,
+      dataTermino: share.endDate,
+      email: share.recipient,
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  console.log(response);
 };

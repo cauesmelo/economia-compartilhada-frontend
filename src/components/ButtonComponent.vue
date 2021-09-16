@@ -21,7 +21,10 @@
       :class="{ danger: isDanger, success: isSuccess }"
       role="button"
     >
-      <img v-if="icon" :src="'./src/assets/icons/' + icon + '.svg'" />
+      <img
+        v-if="icon"
+        :src="'http://localhost:3000/src/assets/icons/' + icon + '.svg'"
+      />
       <p>{{ text }}</p>
     </button>
   </div>

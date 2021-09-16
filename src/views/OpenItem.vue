@@ -1,7 +1,8 @@
 <script setup lang="ts">
+  import ButtonComponent from '@/components/ButtonComponent.vue';
   import Navigation from '@/components/Navigation.vue';
   import { reactive, computed } from 'vue';
-  import { IItem, updateItem } from '../services/api';
+  import { getItem } from '../services/api';
   import store from '../store';
   import { createToast } from 'mosha-vue-toastify';
   import router from '../router';
@@ -12,14 +13,15 @@
 
   const item = reactive({
     id: +route.params.id,
-    nome: route.query.nome,
-    descricao: route.query.descricao,
-    tipo: route.query.tipo,
-  } as IItem);
+    name: '',
+    desc: '',
+    type: '',
+    share: [],
+  });
 
   const handleSubmit = async () => {
     try {
-      await updateItem(item, token);
+      await getItem(+route.params.id, token);
       createToast('Item atualizado', { type: 'success' });
       router.push('/listar-itens');
     } catch (err) {
@@ -27,6 +29,33 @@
       console.log(err);
     }
   };
+
+  const loadItem = async () => {
+    const { nome, tipo, descricao, compartilhamentos } = await getItem(
+      +route.params.id,
+      token
+    );
+
+    item.name = nome;
+    item.type = tipo;
+    item.desc = descricao;
+    item.share = compartilhamentos;
+  };
+
+  const handleShare = () => {
+    router.push({
+      path: `/compartilhar/${item.id}`,
+      query: {
+        name: item.name,
+      },
+    });
+  };
+
+  const handleCancelShare = () => {
+    console.log('cancelar compartilhamento');
+  };
+
+  loadItem();
 </script>
 
 <template>
@@ -38,32 +67,41 @@
       </div>
 
       <h3>Nome</h3>
-      <p>Nome do item</p>
+      <p>{{ item.name }}</p>
 
       <h3>Descrição</h3>
-      <p>Descricao do item</p>
+      <p>{{ item.desc }}</p>
 
       <h3>Tipo</h3>
-      <p>Tipo</p>
+      <p>{{ item.type }}</p>
 
+      <div class="buttonContainer">
+        <ButtonComponent
+          text="Compartilhar"
+          icon="white-Send"
+          @click="handleShare"
+        />
+      </div>
+
+      <h2 class="margin-top">Compartilhamentos</h2>
       <table>
         <thead>
           <tr>
-            <td>Inicio</td>
-            <td>Termino</td>
             <td>Usuário</td>
+            <td>Início</td>
+            <td>Termino</td>
             <td>status</td>
+            <td></td>
           </tr>
         </thead>
 
-        <tr v-for="(item, index) in items" :key="index">
-          <td>{{ item.nome }}</td>
-          <td>{{ item.descricao }}</td>
-          <td>{{ item.tipo }}</td>
+        <tr>
+          <td>aaa</td>
+          <td>bbb</td>
+          <td>cc</td>
+          <td>eee</td>
           <td class="buttonsContainer">
-            <div class="openBtn" @click="handleOpen(item.id)"></div>
-            <div class="editBtn" @click="handleEdit(item.id)"></div>
-            <div class="deleteBtn" @click="handleDelete(item.id)"></div>
+            <div class="closeIcon" @click="handleCancelShare"></div>
           </td>
         </tr>
       </table>
@@ -72,12 +110,15 @@
 </template>
 
 <style lang="scss" scoped>
+  .margin-top {
+    margin-top: 4rem;
+  }
   .center {
     width: 100%;
     display: flex;
     justify-content: center;
     .container {
-      max-width: 700px;
+      max-width: 1280px;
       margin: 1rem;
       margin-top: 3rem;
       flex-grow: 1;
@@ -90,6 +131,58 @@
       h3 {
         margin-top: 1.5rem;
         font-weight: 600;
+        color: $accent-color;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        font-size: 0.9rem;
+        min-width: 400px;
+
+        thead {
+          tr {
+            font-weight: 600;
+            background-color: $accent-color;
+            color: $bg-color;
+            text-align: left;
+          }
+        }
+
+        th,
+        td {
+          padding: 12px 15px;
+
+          &:nth-of-type(1) {
+            white-space: nowrap;
+            padding-right: 4rem;
+          }
+        }
+
+        tr {
+          &:nth-of-type(even) {
+            background-color: #f3f3f3;
+          }
+
+          .buttonsContainer {
+            display: flex;
+            justify-content: flex-end;
+
+            .closeIcon {
+              opacity: 0.8;
+              cursor: pointer;
+              width: 1.5rem;
+              height: 1.5rem;
+
+              &:hover {
+                opacity: 1;
+              }
+
+              background-image: url('../assets/icons/Close.svg');
+            }
+          }
+        }
       }
     }
   }

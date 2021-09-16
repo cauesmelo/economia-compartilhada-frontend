@@ -13,6 +13,7 @@ import CreateItem from '@/views/CreateItem.vue';
 import ReadItems from '@/views/ReadItems.vue';
 import UpdateItem from '@/views/UpdateItem.vue';
 import OpenItem from '@/views/OpenItem.vue';
+import Share from '@/views/Share.vue';
 
 import Unauthorized from '@/views/Unauthorized.vue';
 import NotFound from '@/views/NotFound.vue';
@@ -59,6 +60,11 @@ const routes = [
     path: '/listar-itens',
     name: 'ReadItems',
     component: ReadItems,
+  },
+  {
+    path: '/compartilhar/:id',
+    name: 'Share',
+    component: Share,
   },
   {
     path: '/alterar-item/:id',

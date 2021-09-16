@@ -90,7 +90,6 @@
   };
 
   const handleOpen = (id: number) => {
-    console.log('open', id);
     router.push({
       path: `/item/${id}`,
     });
@@ -149,7 +148,7 @@
             />
           </div>
         </div>
-        <table>
+        <table v-if="items.length !== 0">
           <thead>
             <tr>
               <td>Nome</td>
@@ -172,6 +171,7 @@
         </table>
 
         <Pagination
+          v-if="items.length !== 0"
           :current="currentPage"
           :total="totalItems"
           @changePage="handleChangePage"
