@@ -135,3 +135,20 @@ export const updatePassword = async (
 
   return response;
 };
+
+export const search = async (
+  searchQuery: string,
+  pageNumber: number,
+  token: string
+): Promise<IGetItemsResponse> => {
+  const { data } = await axios.get(
+    URL +
+      `/api/item/listatermo?sort=&per_page=10&page=${pageNumber}&termo=${searchQuery}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  console.log(data.data);
+  return data.data;
+};

@@ -2,8 +2,9 @@
   import Navigation from '@/components/Navigation.vue';
   import { computed, ref, reactive } from 'vue';
   import store from '../store';
-  import { getItems, IItem, deleteItem } from '../services/api';
+  import { getItems, IItem, deleteItem, search } from '../services/api';
   import ButtonComponent from '@/components/ButtonComponent.vue';
+  import SearchComponent from '@/components/Search.vue';
   import Pagination from '@/components/Pagination.vue';
   import Modal from '@/components/Modal.vue';
   import router from '../router';
@@ -14,20 +15,39 @@
   const totalItems = ref(0);
   const currentPage = ref(1);
   const itemToDelete = ref(0);
+  const showModal = ref(false);
+  const isSearch = ref(false);
+  const searchStr = ref('');
 
-  const loadItems = async () => {
+  const clearItems = () => {
     while (items.length > 0) items.pop();
-    const { data, total, current_page } = await getItems(
-      currentPage.value,
-      token
-    );
-    items.push(...data);
-    totalItems.value = total;
-    currentPage.value = current_page;
-    console.log(items);
   };
 
-  loadItems();
+  const setItems = (data: IItem[]) => {
+    clearItems();
+    items.push(...data);
+  };
+
+  const loadItems = async () => {
+    if (isSearch.value) {
+      const { data, total } = await search(
+        searchStr.value,
+        currentPage.value,
+        token
+      );
+      setItems(data);
+      totalItems.value = total;
+      isSearch.value = true;
+    } else {
+      const { data, total, current_page } = await getItems(
+        currentPage.value,
+        token
+      );
+      setItems(data);
+      totalItems.value = total;
+      currentPage.value = current_page;
+    }
+  };
 
   const handleNew = () => {
     router.push('/criar-item');
@@ -78,8 +98,21 @@
     loadItems();
   };
 
-  const showModal = ref(false);
-  // async () => await loadItems();
+  const handleSearch = async (searchQuery: string) => {
+    const { data, total } = await search(searchQuery, 1, token);
+    setItems(data);
+    totalItems.value = total;
+    currentPage.value = 1;
+    isSearch.value = true;
+    searchStr.value = searchQuery;
+  };
+
+  const handleClearSearch = async () => {
+    isSearch.value = false;
+    loadItems();
+  };
+
+  loadItems();
 </script>
 
 <template>
@@ -100,6 +133,10 @@
             <h2>Itens compartilhados</h2>
           </div>
           <div class="headerContainerButton">
+            <SearchComponent
+              @search="handleSearch"
+              @clearSearch="handleClearSearch"
+            />
             <ButtonComponent
               text="Novo item"
               icon="white-Plus"
@@ -163,6 +200,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          gap: 1rem;
         }
       }
 
