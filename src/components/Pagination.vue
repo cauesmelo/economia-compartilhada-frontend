@@ -21,7 +21,11 @@
 
 <template>
   <div class="paginationComponentContainer">
-    <div :class="{ disable: current === 1 }" @click="changePage(current - 1)">
+    <div
+      v-if="current > 1"
+      :class="{ disable: current === 1 }"
+      @click="changePage(current - 1)"
+    >
       &lt;&lt;
     </div>
     <div v-show="current > 3" @click="changePage(current - 3)">
@@ -50,6 +54,7 @@
       {{ current + 3 }}
     </div>
     <div
+      v-if="current < calcPages(total)"
       :class="{ disable: current === calcPages(total) }"
       @click="changePage(current + 1)"
     >

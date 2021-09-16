@@ -39,6 +39,7 @@
 
 <style lang="scss" scoped>
   .modalContainer {
+    z-index: 99;
     position: fixed;
     top: 0;
     display: flex;

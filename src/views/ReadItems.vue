@@ -176,12 +176,20 @@
           :total="totalItems"
           @changePage="handleChangePage"
         />
+
+        <h4 v-if="items.length === 0" class="emptyMessage">
+          Nenhum item cadastrado.
+        </h4>
       </div>
     </div>
   </Suspense>
 </template>
 
 <style lang="scss" scoped>
+  .emptyMessage {
+    text-align: center;
+    margin-top: 5rem;
+  }
   .center {
     width: 100%;
     display: flex;

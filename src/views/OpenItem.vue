@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import ButtonComponent from '@/components/ButtonComponent.vue';
+  import Modal from '@/components/Modal.vue';
   import Navigation from '@/components/Navigation.vue';
-  import { reactive, computed } from 'vue';
+  import { reactive, computed, ref } from 'vue';
   import { getItem } from '../services/api';
   import store from '../store';
   import { createToast } from 'mosha-vue-toastify';
@@ -10,6 +11,8 @@
 
   const token = computed(() => store.state.token).value;
   const route = useRoute();
+  const showDelete = ref(false);
+  const itemToDelete = ref(0);
 
   const item = reactive({
     id: +route.params.id,
@@ -52,7 +55,16 @@
   };
 
   const handleCancelShare = () => {
-    console.log('cancelar compartilhamento');
+    showDelete.value = true;
+  };
+
+  const handleCloseModal = () => {
+    showDelete.value = false;
+    itemToDelete.value = 0;
+  };
+
+  const handleConfirmDelete = async () => {
+    console.log('deletar item', itemToDelete.value);
   };
 
   loadItem();
@@ -60,6 +72,14 @@
 
 <template>
   <Navigation />
+  <Modal
+    title="Atenção"
+    text="Deseja cancelar o compartilhamento?"
+    type="DANGER"
+    :show="showDelete"
+    @closeModal="handleCloseModal"
+    @confirm="handleConfirmDelete"
+  />
   <div class="center">
     <div class="container">
       <div class="headerContainer">
@@ -96,10 +116,10 @@
         </thead>
 
         <tr>
-          <td>aaa</td>
-          <td>bbb</td>
-          <td>cc</td>
-          <td>eee</td>
+          <td>teste@gmail.com</td>
+          <td>15/09/2021</td>
+          <td>25/09/2021</td>
+          <td>Aberto</td>
           <td class="buttonsContainer">
             <div class="closeIcon" @click="handleCancelShare"></div>
           </td>
