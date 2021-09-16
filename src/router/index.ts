@@ -12,7 +12,7 @@ import UpdatePassword from '@/views/UpdatePassword.vue';
 import CreateItem from '@/views/CreateItem.vue';
 import ReadItems from '@/views/ReadItems.vue';
 import UpdateItem from '@/views/UpdateItem.vue';
-import DeleteItem from '@/views/DeleteItem.vue';
+import OpenItem from '@/views/OpenItem.vue';
 
 import Unauthorized from '@/views/Unauthorized.vue';
 import NotFound from '@/views/NotFound.vue';
@@ -66,6 +66,11 @@ const routes = [
     component: UpdateItem,
   },
   {
+    path: '/item/:id',
+    name: 'OpenItem',
+    component: OpenItem,
+  },
+  {
     path: '/401',
     component: Unauthorized,
   },
@@ -84,7 +89,7 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = computed(
     () => store.getters['isAuthenticated']
   ).value;
-  if (!isAuthenticated && to.path !== '/login') {
+  if (!isAuthenticated && to.path !== '/login' && to.path !== '/criar-conta') {
     createToast('Acesso negado. Necessário login.', { type: 'danger' });
     router.push('/login');
   } else {

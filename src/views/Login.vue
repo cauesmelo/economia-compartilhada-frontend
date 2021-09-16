@@ -55,6 +55,7 @@
             <router-link to="/about">Esqueci a senha</router-link>
 
             <button @click="handleLogin">Entrar</button>
+            <router-link to="/criar-conta">Criar conta</router-link>
           </form>
         </div>
         <div v-else class="loading">Carregando...</div>

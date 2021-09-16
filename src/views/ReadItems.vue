@@ -91,6 +91,9 @@
 
   const handleOpen = (id: number) => {
     console.log('open', id);
+    router.push({
+      path: `/item/${id}`,
+    });
   };
 
   const handleChangePage = (pageNumber: number) => {
@@ -110,6 +113,7 @@
   const handleClearSearch = async () => {
     isSearch.value = false;
     loadItems();
+    searchStr.value = '';
   };
 
   loadItems();
@@ -131,6 +135,7 @@
         <div class="headerContainer">
           <div class="headerContainerText">
             <h2>Itens compartilhados</h2>
+            <h3 v-if="searchStr !== ''">Pesquisando {{ searchStr }}</h3>
           </div>
           <div class="headerContainerButton">
             <SearchComponent
@@ -194,6 +199,10 @@
           display: flex;
           flex-direction: column;
           flex-grow: 1;
+
+          h3 {
+            margin-top: 1rem;
+          }
         }
 
         .headerContainerButton {

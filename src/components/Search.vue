@@ -35,7 +35,7 @@
   .searchComponentContainer {
     border: 2px solid $accent-color;
     border-radius: 8px;
-    height: 100%;
+    height: 44px;
     width: 20rem;
     display: flex;
     align-items: center;

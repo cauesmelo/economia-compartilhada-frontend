@@ -33,9 +33,16 @@ interface IPasswordChange {
   repeatedNewPassword: string;
 }
 
-interface IPasswordChangeResponse {
+interface Response {
   message: string;
   type: 'SUCCESS' | 'FAIL';
+}
+
+export interface IUserInsert {
+  email: string;
+  name: string;
+  password: string;
+  repeatedPassword: string;
 }
 
 export const login = async (
@@ -106,8 +113,8 @@ export const updateItem = async (item: IItem, token: string): Promise<void> => {
 export const updatePassword = async (
   password: IPasswordChange,
   token: string
-): Promise<IPasswordChangeResponse> => {
-  const response = {} as IPasswordChangeResponse;
+): Promise<Response> => {
+  const response = {} as Response;
 
   try {
     await axios.post(
@@ -148,7 +155,35 @@ export const search = async (
       headers: { Authorization: `Bearer ${token}` },
     }
   );
-
-  console.log(data.data);
   return data.data;
+};
+
+export const createAccount = async (user: IUserInsert): Promise<Response> => {
+  const response = {} as Response;
+
+  try {
+    await axios.post(
+      URL + `/api/usuario/novo`,
+      {
+        email: user.email,
+        nome: user.name,
+        senha: user.password,
+        senhaRepetida: user.repeatedPassword,
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    response.message = 'Usuário criado com sucesso';
+    response.type = 'SUCCESS';
+  } catch (err: any) {
+    response.message = Object.values(err.response.data.errors)[0] as string;
+    response.type = 'FAIL';
+  }
+
+  return response;
 };

@@ -83,7 +83,7 @@
     display: flex;
     justify-content: center;
     .container {
-      max-width: 1280px;
+      max-width: 700px;
       margin: 1rem;
       margin-top: 3rem;
       flex-grow: 1;
